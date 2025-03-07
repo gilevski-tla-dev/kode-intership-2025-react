@@ -1,0 +1,15 @@
+export const departmentTranslate: { [key: string]: string } = {
+  Все: "all",
+  Android: "android",
+  iOS: "ios",
+  Дизайн: "design",
+  Менеджмент: "management",
+  QA: "qa",
+  "Бэк-офис": "back_office",
+  Frontend: "frontend",
+  HR: "hr",
+  PR: "pr",
+  Backend: "backend",
+  Техподдержка: "support",
+  Аналитика: "analytics",
+};

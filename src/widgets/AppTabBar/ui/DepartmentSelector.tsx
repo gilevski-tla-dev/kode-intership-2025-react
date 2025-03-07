@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
-
-interface TabsProps {
-  onTabChange: (tab: string) => void;
-  activeTab: string;
-}
+import { useDepartment } from "@/app/providers/DepartmentContext";
 
 interface TabProps {
   $active: boolean;
@@ -61,7 +57,8 @@ const tabs = [
   "Аналитика",
 ];
 
-const DepartmentSelector = ({ activeTab, onTabChange }: TabsProps) => {
+export const DepartmentSelector = () => {
+  const { activeTab, setActiveTab } = useDepartment();
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
@@ -72,7 +69,6 @@ const DepartmentSelector = ({ activeTab, onTabChange }: TabsProps) => {
 
       if (!container || !indicator) return;
 
-      // Находим активный таб
       const activeTabElement = container.querySelector(
         `[data-active="true"]`
       ) as HTMLDivElement | null;
@@ -103,7 +99,7 @@ const DepartmentSelector = ({ activeTab, onTabChange }: TabsProps) => {
         <Tab
           key={tab}
           $active={activeTab === tab}
-          onClick={() => onTabChange(tab)}
+          onClick={() => setActiveTab(tab)}
           data-active={activeTab === tab}
         >
           {tab}

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useUsers } from "../api/fetchProfiles";
 import { ProfileCard } from "./ProfileCard";
 import ErrorRefetch from "@/shared/ui/ErrorRefetch";
+import { useDepartment } from "@/app/providers/DepartmentContext";
 
 const ListContainer = styled.div`
   display: flex;
@@ -18,7 +19,8 @@ const CenteredContainer = styled.div`
 `;
 
 export const ProfileList = () => {
-  const { users, isLoading, refetch, error } = useUsers();
+  const { activeTab } = useDepartment();
+  const { users, isLoading, refetch, error } = useUsers(activeTab);
 
   // Состояние загрузки
   if (isLoading) {

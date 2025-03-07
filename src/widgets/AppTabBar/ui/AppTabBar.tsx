@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import SearchInput from "./SearchInput";
 import DepartmentSelector from "./DepartmentSelector";
-import { useState } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -20,13 +19,11 @@ const Title = styled.h1`
 `;
 
 export const AppTabBar = () => {
-  const [activeTab, setActiveTab] = useState<string>("Все");
-
   return (
     <Container>
       <Title>Поиск</Title>
       <SearchInput />
-      <DepartmentSelector activeTab={activeTab} onTabChange={setActiveTab} />
+      <DepartmentSelector />
     </Container>
   );
 };
