@@ -1,34 +1,59 @@
-import { useEffect } from "react";
-import { fetchUsers } from "../api/fetchProfiles";
-import ProfileCard from "./ProfileCard";
+import styled from "styled-components";
+import { useUsers } from "../api/fetchProfiles";
+import { ProfileCard } from "./ProfileCard";
+import ErrorRefetch from "@/shared/ui/ErrorRefetch";
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+`;
+
+const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+`;
 
 export const ProfileList = () => {
-  useEffect(() => {
-    // запрос при монтировании компонента
-    const fetchData = async () => {
-      try {
-        const users = await fetchUsers();
-        console.log("Fetched users:", users); //данные в консоль
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
+  const { users, isLoading, refetch, error } = useUsers();
 
-    fetchData();
-  }, []);
+  // Состояние загрузки
+  if (isLoading) {
+    return (
+      <ListContainer>
+        {Array.from({ length: 15 }).map((_, index) => (
+          <ProfileCard key={index} loading />
+        ))}
+      </ListContainer>
+    );
+  }
 
+  // Состояние ошибки
+  if (error) {
+    return (
+      <CenteredContainer>
+        <ErrorRefetch onRefetch={refetch} />
+      </CenteredContainer>
+    );
+  }
+
+  // Отображение списка пользователей
   return (
-    <div>
-      <ProfileCard />
-      <ProfileCard />
-      <ProfileCard />
-      <ProfileCard />
-      <ProfileCard />
-      <ProfileCard />
-      <ProfileCard />
-      <ProfileCard />
-      <ProfileCard />
-    </div>
+    <ListContainer>
+      {users?.map((user) => (
+        <ProfileCard
+          key={user.id}
+          avatarUrl={user.avatarUrl}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          userTag={user.userTag}
+          position={user.position}
+        />
+      ))}
+    </ListContainer>
   );
 };
 

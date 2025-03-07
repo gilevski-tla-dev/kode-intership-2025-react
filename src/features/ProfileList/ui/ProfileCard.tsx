@@ -1,20 +1,28 @@
 import styled from "styled-components";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import mockAvatar from "@/shared/assets/mockAvatar.png";
 
 const Card = styled.div`
   display: flex;
   align-items: center;
-  height: 84px;
-  padding-left: 16px;
+  height: 80px;
 `;
 
 const ImageContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background-color: #000;
+  overflow: hidden;
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const InfoContainer = styled.div`
@@ -42,6 +50,7 @@ const Usertag = styled.p`
   font-size: 14px;
   font-weight: 500;
   line-height: 18px;
+  text-transform: lowercase;
 `;
 
 const Position = styled.p`
@@ -51,9 +60,23 @@ const Position = styled.p`
   line-height: 16px;
 `;
 
-const loading = false; // Флаг загрузки
+interface ProfileCardProps {
+  loading?: boolean;
+  avatarUrl?: string;
+  firstName?: string;
+  lastName?: string;
+  userTag?: string;
+  position?: string;
+}
 
-export const ProfileCard = () => {
+export const ProfileCard = ({
+  loading,
+  avatarUrl,
+  firstName,
+  lastName,
+  userTag,
+  position,
+}: ProfileCardProps) => {
   return (
     <Card>
       {loading ? (
@@ -65,25 +88,31 @@ export const ProfileCard = () => {
           highlightColor="#F3F3F6"
         />
       ) : (
-        <ImageContainer></ImageContainer>
+        <ImageContainer>
+          <StyledImage
+            src={avatarUrl || mockAvatar}
+            alt={`${firstName} ${lastName}`}
+            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              e.currentTarget.src = mockAvatar;
+            }}
+          />
+        </ImageContainer>
       )}
 
       <InfoContainer>
         <TopRow>
           {loading ? (
-            <>
-              <Skeleton
-                borderRadius={50}
-                width={144}
-                height={16}
-                baseColor="#FAFAFA"
-                highlightColor="#F3F3F6"
-              />
-            </>
+            <Skeleton
+              borderRadius={50}
+              width={144}
+              height={16}
+              baseColor="#FAFAFA"
+              highlightColor="#F3F3F6"
+            />
           ) : (
             <>
-              <Name>Name</Name>
-              <Usertag>Роль</Usertag>
+              <Name>{`${firstName} ${lastName}`}</Name>
+              <Usertag>{userTag}</Usertag>
             </>
           )}
         </TopRow>
@@ -97,7 +126,7 @@ export const ProfileCard = () => {
             highlightColor="#F3F3F6"
           />
         ) : (
-          <Position>Должность</Position>
+          <Position>{position}</Position>
         )}
       </InfoContainer>
     </Card>

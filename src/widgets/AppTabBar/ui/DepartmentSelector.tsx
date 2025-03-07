@@ -18,6 +18,7 @@ const TabsContainer = styled.div`
   -webkit-overflow-scrolling: touch;
   margin-top: auto;
   scrollbar-width: none;
+  user-select: none;
 
   &::-webkit-scrollbar {
     display: none;
