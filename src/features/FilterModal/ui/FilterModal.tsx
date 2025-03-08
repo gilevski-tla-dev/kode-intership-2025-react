@@ -1,0 +1,185 @@
+import CrossIcon from "@/shared/assets/CrossIcon";
+import { FC, useState } from "react";
+import styled, { keyframes } from "styled-components";
+
+interface FilterModalProps {
+  onClose: () => void;
+}
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+`;
+
+const Overlay = styled.div<{ isClosing: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: ${({ isClosing }) => (isClosing ? 0 : 1)};
+  transition: opacity 0.3s ease-in-out;
+`;
+
+const ModalContent = styled.div<{ isClosing: boolean }>`
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 20px;
+  height: 192px;
+  width: 90%;
+  max-width: 373px;
+  padding: 0 16px 8px 16px;
+  position: relative;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s ease;
+`;
+
+const Title = styled.p`
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #050510;
+  margin-top: 24px;
+  align-self: center;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  top: 24px;
+  right: 23px;
+  background-color: #f7f7f8;
+  border: none;
+  cursor: pointer;
+`;
+
+const RadioButtonWrapper = styled.div`
+  margin-top: auto;
+`;
+
+const RadioLabel = styled.label`
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+`;
+
+const RadioInput = styled.input`
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+  width: 0;
+  height: 0;
+`;
+
+const StyledRadio = styled.div<{ checked: boolean }>`
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6534ff;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 14px;
+  transition: 0.2s ease-in-out;
+
+  ${RadioInput}:checked + & {
+    background: #6534ff;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: white;
+    }
+  }
+`;
+
+const RadioText = styled.span`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #050510;
+`;
+
+const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
+  const [selectedOption, setSelectedOption] = useState<string>("alphabet");
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleOptionChange = (value: string) => {
+    setSelectedOption(value);
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(onClose, 300);
+  };
+
+  return (
+    <Overlay isClosing={isClosing} onClick={handleClose}>
+      <ModalContent isClosing={isClosing} onClick={(e) => e.stopPropagation()}>
+        <CloseButton onClick={handleClose}>
+          <CrossIcon />
+        </CloseButton>
+        <Title>Сортировка</Title>
+
+        <RadioButtonWrapper>
+          <RadioLabel>
+            <RadioInput
+              type="radio"
+              name="sortOption"
+              value="alphabet"
+              checked={selectedOption === "alphabet"}
+              onChange={() => handleOptionChange("alphabet")}
+            />
+            <StyledRadio checked={selectedOption === "alphabet"} />
+            <RadioText>По алфавиту</RadioText>
+          </RadioLabel>
+
+          <RadioLabel>
+            <RadioInput
+              type="radio"
+              name="sortOption"
+              value="birthDate"
+              checked={selectedOption === "birthDate"}
+              onChange={() => handleOptionChange("birthDate")}
+            />
+            <StyledRadio checked={selectedOption === "birthDate"} />
+            <RadioText>По дню рождения</RadioText>
+          </RadioLabel>
+        </RadioButtonWrapper>
+      </ModalContent>
+    </Overlay>
+  );
+};
+
+export default FilterModal;

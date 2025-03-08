@@ -5,6 +5,7 @@ import { useAppDispatch } from "@/app/store/types";
 import { setSearchQuery } from "../model/searchFilterSlice";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 import { useState, useEffect } from "react";
+import FilterModal from "@/features/FilterModal/ui/FilterModal";
 
 const Wrapper = styled.div`
   position: relative;
@@ -48,7 +49,6 @@ const IconWrapper = styled.div`
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-
   ${Wrapper}:has(${Input}:focus) & svg {
     fill: #050510;
   }
@@ -59,13 +59,18 @@ const FilterIconWrapper = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 `;
 
 const SearchInput = () => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState("");
-  const debouncedValue = useDebounce(inputValue, 300);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const debouncedValue = useDebounce<string>(inputValue, 300);
 
   useEffect(() => {
     dispatch(setSearchQuery(debouncedValue));
@@ -85,9 +90,12 @@ const SearchInput = () => {
         onChange={handleChange}
         placeholder="Введи имя, тег, почту..."
       />
-      <FilterIconWrapper>
+      <FilterIconWrapper onClick={() => setIsFilterOpen(true)}>
         <FilterIcon />
       </FilterIconWrapper>
+
+      {/* Модальное окно */}
+      {isFilterOpen && <FilterModal onClose={() => setIsFilterOpen(false)} />}
     </Wrapper>
   );
 };

@@ -4,6 +4,7 @@ import { ProfileCard } from "../../../entities/user/ui/ProfileCard";
 import ErrorRefetch from "@/shared/ui/ErrorRefetch";
 import { useAppSelector } from "@/app/store/types";
 import { selectFilters } from "@/features/SearchFilter/model/selectors";
+import NotFound from "@/shared/ui/NotFound";
 
 const ListContainer = styled.div`
   display: flex;
@@ -51,6 +52,15 @@ export const ProfileList = () => {
     return (
       <CenteredContainer>
         <ErrorRefetch onRefetch={refetch} />
+      </CenteredContainer>
+    );
+  }
+
+  // Состояние когда не найден ни один профиль
+  if (filters.searchQuery && filteredUsers?.length === 0) {
+    return (
+      <CenteredContainer>
+        <NotFound />
       </CenteredContainer>
     );
   }
