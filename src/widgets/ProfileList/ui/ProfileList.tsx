@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useUsers } from "../api/fetchProfiles";
-import { ProfileCard } from "./ProfileCard";
+import { useUsers } from "../../../entities/user/api/fetchProfiles";
+import { ProfileCard } from "../../../entities/user/ui/ProfileCard";
 import ErrorRefetch from "@/shared/ui/ErrorRefetch";
-import { useDepartment } from "@/app/providers/DepartmentContext";
+import { useAppSelector } from "@/app/store/types";
+import { selectFilters } from "@/features/SearchFilter/model/selectors";
 
 const ListContainer = styled.div`
   display: flex;
@@ -19,8 +20,20 @@ const CenteredContainer = styled.div`
 `;
 
 export const ProfileList = () => {
-  const { activeTab } = useDepartment();
-  const { users, isLoading, refetch, error } = useUsers(activeTab);
+  const filters = useAppSelector(selectFilters);
+  const { users, isLoading, refetch, error } = useUsers(filters.activeTab);
+
+  // Фильтрация пользователей
+  const filteredUsers = users?.filter((user) => {
+    const { firstName, lastName, userTag } = user;
+    const query = filters.searchQuery;
+
+    return (
+      firstName.toLowerCase().includes(query) ||
+      lastName.toLowerCase().includes(query) ||
+      userTag.toLowerCase().includes(query)
+    );
+  });
 
   // Состояние загрузки
   if (isLoading) {
@@ -45,7 +58,7 @@ export const ProfileList = () => {
   // Отображение списка пользователей
   return (
     <ListContainer>
-      {users?.map((user) => (
+      {filteredUsers?.map((user) => (
         <ProfileCard
           key={user.id}
           avatarUrl={user.avatarUrl}

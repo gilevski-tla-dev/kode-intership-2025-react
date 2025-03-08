@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
-import { useDepartment } from "@/app/providers/DepartmentContext";
+import { setActiveTab } from "../model/searchFilterSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/types";
 
 interface TabProps {
   $active: boolean;
@@ -58,7 +59,8 @@ const tabs = [
 ];
 
 export const DepartmentSelector = () => {
-  const { activeTab, setActiveTab } = useDepartment();
+  const dispatch = useAppDispatch();
+  const activeTab = useAppSelector((state) => state.searchFilter.activeTab);
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
@@ -99,7 +101,7 @@ export const DepartmentSelector = () => {
         <Tab
           key={tab}
           $active={activeTab === tab}
-          onClick={() => setActiveTab(tab)}
+          onClick={() => dispatch(setActiveTab(tab))}
           data-active={activeTab === tab}
         >
           {tab}

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import SearchInput from "./SearchInput";
-import DepartmentSelector from "./DepartmentSelector";
+import SearchInput from "../../../features/SearchFilter/ui/SearchInput";
+import DepartmentSelector from "../../../features/SearchFilter/ui/DepartmentSelector";
 
 const Container = styled.div`
   display: flex;

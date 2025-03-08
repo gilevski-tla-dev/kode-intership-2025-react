@@ -1,6 +1,10 @@
 import SearchIcon from "@/shared/assets/SearchIcon";
 import FilterIcon from "@/shared/assets/FilterIcon";
 import styled from "styled-components";
+import { useAppDispatch } from "@/app/store/types";
+import { setSearchQuery } from "../model/searchFilterSlice";
+import { useDebounce } from "@/shared/hooks/useDebounce";
+import { useState, useEffect } from "react";
 
 const Wrapper = styled.div`
   position: relative;
@@ -59,13 +63,28 @@ const FilterIconWrapper = styled.div`
 `;
 
 const SearchInput = () => {
+  const dispatch = useAppDispatch();
+  const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebounce(inputValue, 300);
+
+  useEffect(() => {
+    dispatch(setSearchQuery(debouncedValue));
+  }, [debouncedValue, dispatch]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
   return (
     <Wrapper>
       <IconWrapper>
         <SearchIcon color="#C3C3C6" />
       </IconWrapper>
-
-      <Input placeholder="Введи имя, тег, почту..." />
+      <Input
+        value={inputValue}
+        onChange={handleChange}
+        placeholder="Введи имя, тег, почту..."
+      />
       <FilterIconWrapper>
         <FilterIcon />
       </FilterIconWrapper>
