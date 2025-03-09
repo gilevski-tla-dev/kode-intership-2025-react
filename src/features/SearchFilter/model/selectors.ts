@@ -9,9 +9,9 @@ export const selectSortType = (state: RootState) => state.searchFilter.sortType;
 
 export const selectFilters = createSelector(
   [selectActiveTab, selectSearchQuery, selectSortType],
-  (activeTab, searchQuery) => ({
+  (activeTab, searchQuery, sortType) => ({
     activeTab,
     searchQuery: searchQuery.toLowerCase(),
-    selectSortType,
+    sortType,
   })
 );

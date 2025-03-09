@@ -25,15 +25,26 @@ export const ProfileList = () => {
   const { users, isLoading, refetch, error } = useUsers(filters.activeTab);
 
   // Фильтрация пользователей
-  const filteredUsers = users?.filter((user) => {
-    const { firstName, lastName, userTag } = user;
-    const query = filters.searchQuery;
+  const filteredUsers = users
+    ? users.filter((user) => {
+        const { firstName, lastName, userTag } = user;
+        const query = filters.searchQuery;
+        return (
+          firstName.toLowerCase().includes(query) ||
+          lastName.toLowerCase().includes(query) ||
+          userTag.toLowerCase().includes(query)
+        );
+      })
+    : [];
 
-    return (
-      firstName.toLowerCase().includes(query) ||
-      lastName.toLowerCase().includes(query) ||
-      userTag.toLowerCase().includes(query)
-    );
+  // Сортировка пользователей
+  const sortedUsers = [...(filteredUsers || [])].sort((a, b) => {
+    if (filters.sortType === "alphabet") {
+      const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
+      const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
+      return nameA.localeCompare(nameB);
+    }
+    return 0;
   });
 
   // Состояние загрузки
@@ -68,7 +79,7 @@ export const ProfileList = () => {
   // Отображение списка пользователей
   return (
     <ListContainer>
-      {filteredUsers?.map((user) => (
+      {sortedUsers.map((user) => (
         <ProfileCard
           key={user.id}
           avatarUrl={user.avatarUrl}
