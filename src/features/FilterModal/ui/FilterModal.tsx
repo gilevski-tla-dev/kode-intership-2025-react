@@ -1,5 +1,8 @@
+import { setSortType } from "@/features/SearchFilter/model/searchFilterSlice";
+import { selectSortType } from "@/features/SearchFilter/model/selectors";
 import CrossIcon from "@/shared/assets/CrossIcon";
 import { FC, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled, { keyframes } from "styled-components";
 
 interface FilterModalProps {
@@ -132,11 +135,17 @@ const RadioText = styled.span`
 `;
 
 const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
-  const [selectedOption, setSelectedOption] = useState<string>("alphabet");
+  const dispatch = useDispatch();
+  const sortType = useSelector(selectSortType);
   const [isClosing, setIsClosing] = useState(false);
 
   const handleOptionChange = (value: string) => {
-    setSelectedOption(value);
+    dispatch(setSortType(value));
+
+    // чтобы пользователь успел увидеть анимацию выбора
+    setTimeout(() => {
+      handleClose();
+    }, 100);
   };
 
   const handleClose = () => {
@@ -158,10 +167,10 @@ const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
               type="radio"
               name="sortOption"
               value="alphabet"
-              checked={selectedOption === "alphabet"}
+              checked={sortType === "alphabet"}
               onChange={() => handleOptionChange("alphabet")}
             />
-            <StyledRadio checked={selectedOption === "alphabet"} />
+            <StyledRadio checked={sortType === "alphabet"} />
             <RadioText>По алфавиту</RadioText>
           </RadioLabel>
 
@@ -170,10 +179,10 @@ const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
               type="radio"
               name="sortOption"
               value="birthDate"
-              checked={selectedOption === "birthDate"}
+              checked={sortType === "birthDate"}
               onChange={() => handleOptionChange("birthDate")}
             />
-            <StyledRadio checked={selectedOption === "birthDate"} />
+            <StyledRadio checked={sortType === "birthDate"} />
             <RadioText>По дню рождения</RadioText>
           </RadioLabel>
         </RadioButtonWrapper>
