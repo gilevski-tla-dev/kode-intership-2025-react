@@ -85,6 +85,7 @@ export const DepartmentSelector = () => {
     updateIndicatorPosition();
   }, [activeTab]);
 
+  // скролл колесиком мыши
   const handleWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
     const container = containerRef.current;
     if (!container) return;

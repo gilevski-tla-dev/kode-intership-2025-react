@@ -31,7 +31,7 @@ const fadeOut = keyframes`
   }
 `;
 
-const Overlay = styled.div<{ isClosing: boolean }>`
+const Overlay = styled.div<{ $isClosing: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -42,11 +42,11 @@ const Overlay = styled.div<{ isClosing: boolean }>`
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  opacity: ${({ isClosing }) => (isClosing ? 0 : 1)};
+  opacity: ${({ $isClosing }) => ($isClosing ? 0 : 1)};
   transition: opacity 0.3s ease-in-out;
 `;
 
-const ModalContent = styled.div<{ isClosing: boolean }>`
+const ModalContent = styled.div<{ $isClosing: boolean }>`
   display: flex;
   flex-direction: column;
   background: white;
@@ -56,7 +56,7 @@ const ModalContent = styled.div<{ isClosing: boolean }>`
   max-width: 373px;
   padding: 0 16px 8px 16px;
   position: relative;
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s ease;
+  animation: ${({ $isClosing }) => ($isClosing ? fadeOut : fadeIn)} 0.3s ease;
 `;
 
 const Title = styled.p`
@@ -154,8 +154,8 @@ const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
   };
 
   return (
-    <Overlay isClosing={isClosing} onClick={handleClose}>
-      <ModalContent isClosing={isClosing} onClick={(e) => e.stopPropagation()}>
+    <Overlay $isClosing={isClosing} onClick={handleClose}>
+      <ModalContent $isClosing={isClosing} onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={handleClose}>
           <CrossIcon />
         </CloseButton>

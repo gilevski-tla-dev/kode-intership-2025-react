@@ -60,13 +60,23 @@ const Position = styled.p`
   line-height: 16px;
 `;
 
+const Birthday = styled.p`
+  margin-left: auto;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+  color: #55555c;
+`;
+
 interface ProfileCardProps {
+  id?: string;
   loading?: boolean;
   avatarUrl?: string;
   firstName?: string;
   lastName?: string;
   userTag?: string;
   position?: string;
+  birthday?: string;
 }
 
 export const ProfileCard = ({
@@ -76,6 +86,7 @@ export const ProfileCard = ({
   lastName,
   userTag,
   position,
+  birthday,
 }: ProfileCardProps) => {
   return (
     <Card>
@@ -126,9 +137,12 @@ export const ProfileCard = ({
             highlightColor="#F3F3F6"
           />
         ) : (
-          <Position>{position}</Position>
+          <>
+            <Position>{position}</Position>
+          </>
         )}
       </InfoContainer>
+      {birthday && <Birthday>{birthday}</Birthday>}
     </Card>
   );
 };

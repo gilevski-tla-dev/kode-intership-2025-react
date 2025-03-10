@@ -5,6 +5,7 @@ import ErrorRefetch from "@/shared/ui/ErrorRefetch";
 import { useAppSelector } from "@/app/store/types";
 import { selectFilters } from "@/features/SearchFilter/model/selectors";
 import NotFound from "@/shared/ui/NotFound";
+import { useSortedAndFilteredUsers } from "@/features/FilterModal/lib/useSortedAndFilteredUsers";
 
 const ListContainer = styled.div`
   display: flex;
@@ -20,32 +21,44 @@ const CenteredContainer = styled.div`
   min-height: 75vh;
 `;
 
+const Separator = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  color: #c3c3c6;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  width: 100%;
+
+  &::before {
+    margin: 0 70px 0 24px;
+  }
+
+  &::after {
+    margin: 0 24px 0 70px;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    flex-grow: 1;
+    height: 1px;
+    background-color: #c3c3c6;
+  }
+`;
 export const ProfileList = () => {
   const filters = useAppSelector(selectFilters);
   const { users, isLoading, refetch, error } = useUsers(filters.activeTab);
 
-  // Фильтрация пользователей
-  const filteredUsers = users
-    ? users.filter((user) => {
-        const { firstName, lastName, userTag } = user;
-        const query = filters.searchQuery;
-        return (
-          firstName.toLowerCase().includes(query) ||
-          lastName.toLowerCase().includes(query) ||
-          userTag.toLowerCase().includes(query)
-        );
-      })
-    : [];
+  const normalizedFilters = {
+    searchQuery: filters.searchQuery,
+    sortType: filters.sortType || "alphabet",
+  };
 
-  // Сортировка пользователей
-  const sortedUsers = [...(filteredUsers || [])].sort((a, b) => {
-    if (filters.sortType === "alphabet") {
-      const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
-      const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
-      return nameA.localeCompare(nameB);
-    }
-    return 0;
-  });
+  const { sortedUsersWithSeparators, formatDateForDisplay } =
+    useSortedAndFilteredUsers(users, normalizedFilters);
 
   // Состояние загрузки
   if (isLoading) {
@@ -68,7 +81,7 @@ export const ProfileList = () => {
   }
 
   // Состояние когда не найден ни один профиль
-  if (filters.searchQuery && filteredUsers?.length === 0) {
+  if (filters.searchQuery && sortedUsersWithSeparators.length === 0) {
     return (
       <CenteredContainer>
         <NotFound />
@@ -79,16 +92,27 @@ export const ProfileList = () => {
   // Отображение списка пользователей
   return (
     <ListContainer>
-      {sortedUsers.map((user) => (
-        <ProfileCard
-          key={user.id}
-          avatarUrl={user.avatarUrl}
-          firstName={user.firstName}
-          lastName={user.lastName}
-          userTag={user.userTag}
-          position={user.position}
-        />
-      ))}
+      {sortedUsersWithSeparators.map((item, index) =>
+        item.type === "separator" ? (
+          <Separator key={`sep-${index}`}>
+            {new Date().getFullYear() + 1}
+          </Separator>
+        ) : (
+          <ProfileCard
+            key={item.user.id}
+            avatarUrl={item.user.avatarUrl}
+            firstName={item.user.firstName}
+            lastName={item.user.lastName}
+            userTag={item.user.userTag}
+            position={item.user.position}
+            birthday={
+              normalizedFilters.sortType === "birthDate"
+                ? formatDateForDisplay(item.user.birthday)
+                : undefined
+            }
+          />
+        )
+      )}
     </ListContainer>
   );
 };
