@@ -100,6 +100,7 @@ export const ProfileList = () => {
         ) : (
           <ProfileCard
             key={item.user.id}
+            id={item.user.id}
             avatarUrl={item.user.avatarUrl}
             firstName={item.user.firstName}
             lastName={item.user.lastName}

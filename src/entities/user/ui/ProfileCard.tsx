@@ -2,11 +2,17 @@ import styled from "styled-components";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import mockAvatar from "@/shared/assets/mockAvatar.png";
+import { useNavigate } from "react-router-dom";
 
 const Card = styled.div`
   display: flex;
   align-items: center;
   height: 80px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -80,6 +86,7 @@ interface ProfileCardProps {
 }
 
 export const ProfileCard = ({
+  id,
   loading,
   avatarUrl,
   firstName,
@@ -88,8 +95,16 @@ export const ProfileCard = ({
   position,
   birthday,
 }: ProfileCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (!loading && id) {
+      navigate(`/profile/${id}`);
+    }
+  };
+
   return (
-    <Card>
+    <Card onClick={handleClick}>
       {loading ? (
         <Skeleton
           circle
