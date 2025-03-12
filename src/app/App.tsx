@@ -11,7 +11,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <BrowserRouter basename="/kode-intership-2025-react">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/profile/:id" element={<ProfilePage />} />
