@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "gilevski-tla-dev.github.io",
+  "homepage": "gilevski-tla-dev.github.io/kode-intership-2025-react",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
