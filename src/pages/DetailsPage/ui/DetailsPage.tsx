@@ -67,7 +67,7 @@ export const ProfilePage = () => {
 
   return (
     <Container>
-      <ProfileHeader user={user} onBack={() => navigate(-1)} />
+      <ProfileHeader user={user} onBack={() => navigate("/")} />
       <ProfileInfo user={user} />
     </Container>
   );
