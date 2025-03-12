@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { , HashRouter, Route, Routes } from "react-router-dom";
 import { HomePage } from "../pages/HomePage";
 import { ProfilePage } from "../pages/DetailsPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -11,12 +11,12 @@ const App = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter basename="/kode-intership-2025-react">
+        <HashRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/profile/:id" element={<ProfilePage />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </QueryClientProvider>
     </Provider>
   );
