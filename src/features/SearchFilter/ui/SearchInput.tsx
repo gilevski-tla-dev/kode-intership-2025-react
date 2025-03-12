@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import SearchIcon from "@/shared/assets/SearchIcon";
 import FilterIcon from "@/shared/assets/FilterIcon";
 import styled from "styled-components";
-import { useAppDispatch } from "@/app/store/types";
 import { setSearchQuery } from "../model/searchFilterSlice";
 import { useDebounce } from "@/shared/hooks/useDebounce";
-import { useState, useEffect } from "react";
+import { selectSearchQuery } from "../model/selectors"; // Импортируем селектор
 import FilterModal from "@/features/FilterModal/ui/FilterModal";
 
 const Wrapper = styled.div`
@@ -67,11 +68,18 @@ const FilterIconWrapper = styled.div`
 `;
 
 const SearchInput = () => {
-  const dispatch = useAppDispatch();
-  const [inputValue, setInputValue] = useState("");
+  const dispatch = useDispatch();
+  const SearchQuery = useSelector(selectSearchQuery); // Получаем searchQuery из Redux
+  const [inputValue, setInputValue] = useState(SearchQuery); // Инициализируем состояние из Redux
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const debouncedValue = useDebounce<string>(inputValue, 300);
 
+  // Синхронизация Redux-состояния с локальным состоянием
+  useEffect(() => {
+    setInputValue(SearchQuery);
+  }, [SearchQuery]);
+
+  // Отправляем обновленное значение в Redux
   useEffect(() => {
     dispatch(setSearchQuery(debouncedValue));
   }, [debouncedValue, dispatch]);

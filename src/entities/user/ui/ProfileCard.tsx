@@ -3,6 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import mockAvatar from "@/shared/assets/mockAvatar.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Card = styled.div`
   display: flex;
@@ -10,9 +11,7 @@ const Card = styled.div`
   height: 80px;
   cursor: pointer;
   transition: background-color 0.2s;
-  &:hover {
-    background-color: #f5f5f5;
-  }
+
 `;
 
 const ImageContainer = styled.div`
@@ -29,6 +28,7 @@ const StyledImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-color: #f0f0f0;
 `;
 
 const InfoContainer = styled.div`
@@ -84,7 +84,6 @@ interface ProfileCardProps {
   position?: string;
   birthday?: string;
 }
-
 export const ProfileCard = ({
   id,
   loading,
@@ -96,6 +95,12 @@ export const ProfileCard = ({
   birthday,
 }: ProfileCardProps) => {
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
+
+  // Сбрасываем loaded при изменении avatarUrl или loading
+  useEffect(() => {
+    setLoaded(false);
+  }, [avatarUrl, loading]);
 
   const handleClick = () => {
     if (!loading && id) {
@@ -105,29 +110,36 @@ export const ProfileCard = ({
 
   return (
     <Card onClick={handleClick}>
-      {loading ? (
-        <Skeleton
-          circle
-          width={72}
-          height={72}
-          baseColor="#FAFAFA"
-          highlightColor="#F3F3F6"
-        />
-      ) : (
-        <ImageContainer>
+      <ImageContainer>
+        {/* Показываем скелетон если loading ИЛИ (!loaded и данные загружены) */}
+        {(loading || (!loaded && !loading)) && (
+          <Skeleton
+            circle
+            width={72}
+            height={72}
+            baseColor="#FAFAFA"
+            highlightColor="#F3F3F6"
+          />
+        )}
+
+        {/* Рендерим изображение только когда данные загружены */}
+        {!loading && (
           <StyledImage
             src={avatarUrl || mockAvatar}
             alt={`${firstName} ${lastName}`}
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+            onLoad={() => setLoaded(true)}
+            onError={(e) => {
+              console.error("Image load error:", e);
+              setLoaded(true);
               e.currentTarget.src = mockAvatar;
             }}
           />
-        </ImageContainer>
-      )}
+        )}
+      </ImageContainer>
 
       <InfoContainer>
-        <TopRow>
-          {loading ? (
+        {loading ? (
+          <>
             <Skeleton
               borderRadius={50}
               width={144}
@@ -135,24 +147,20 @@ export const ProfileCard = ({
               baseColor="#FAFAFA"
               highlightColor="#F3F3F6"
             />
-          ) : (
-            <>
-              <Name>{`${firstName} ${lastName}`}</Name>
-              <Usertag>{userTag}</Usertag>
-            </>
-          )}
-        </TopRow>
-
-        {loading ? (
-          <Skeleton
-            borderRadius={50}
-            width={80}
-            height={12}
-            baseColor="#FAFAFA"
-            highlightColor="#F3F3F6"
-          />
+            <Skeleton
+              borderRadius={50}
+              width={80}
+              height={12}
+              baseColor="#FAFAFA"
+              highlightColor="#F3F3F6"
+            />
+          </>
         ) : (
           <>
+            <TopRow>
+              <Name>{`${firstName} ${lastName}`}</Name>
+              <Usertag>{userTag}</Usertag>
+            </TopRow>
             <Position>{position}</Position>
           </>
         )}
