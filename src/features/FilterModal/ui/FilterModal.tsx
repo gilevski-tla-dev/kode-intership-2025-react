@@ -49,7 +49,7 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
 const ModalContent = styled.div<{ $isClosing: boolean }>`
   display: flex;
   flex-direction: column;
-  background: white;
+  background: ${(props) => props.theme.colors.background};
   border-radius: 20px;
   height: 192px;
   width: 90%;
@@ -63,7 +63,7 @@ const Title = styled.p`
   font-size: 20px;
   line-height: 24px;
   font-weight: 600;
-  color: #050510;
+  color: ${(props) => props.theme.colors.primaryText};
   margin-top: 24px;
   align-self: center;
 `;
@@ -75,7 +75,7 @@ const CloseButton = styled.button`
   border-radius: 50%;
   top: 24px;
   right: 23px;
-  background-color: #f7f7f8;
+  background-color: ${(props) => props.theme.colors.background};
   border: none;
   cursor: pointer;
 `;
@@ -131,7 +131,7 @@ const RadioText = styled.span`
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  color: #050510;
+  color: ${(props) => props.theme.colors.primaryText};
 `;
 
 const FilterModal: FC<FilterModalProps> = ({ onClose }) => {

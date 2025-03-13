@@ -16,6 +16,7 @@ const Title = styled.h1`
   font-weight: 700;
   line-height: 28px;
   margin-left: 8px;
+  color: ${(props) => props.theme.colors.primaryText};
 `;
 
 export const AppTabBar = () => {

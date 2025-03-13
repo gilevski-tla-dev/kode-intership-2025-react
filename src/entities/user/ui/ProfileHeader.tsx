@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import ArrowIcon from "@/shared/assets/ArrowIcon";
 import mockAvatar from "@/shared/assets/mockAvatar.png";
 import { FC, useState } from "react";
@@ -21,7 +21,7 @@ const TopBlock = styled.div`
   flex-direction: column;
   align-items: center;
   height: 280px;
-  background-color: #f7f7f8;
+  background-color: ${(props) => props.theme.colors.profileHeader};
   position: relative;
 `;
 
@@ -46,7 +46,7 @@ const Name = styled.p`
   font-size: 24px;
   font-weight: 700;
   line-height: 28px;
-  color: #050510;
+  color: ${(props) => props.theme.colors.primaryText};
 `;
 
 const UserDetails = styled.div`
@@ -68,7 +68,7 @@ const UserTag = styled.span`
 `;
 
 const Position = styled.p`
-  color: #55555c;
+  color: ${(props) => props.theme.colors.secondaryText};
   font-size: 13px;
   font-weight: 400;
   line-height: 16px;
@@ -78,17 +78,26 @@ const Position = styled.p`
 export const ProfileHeader: FC<ProfileHeaderProps> = ({ user, onBack }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const theme = useTheme();
 
   return (
     <TopBlock>
       {/* Иконка назад */}
       <IconWrapper onClick={onBack}>
-        <ArrowIcon />
+        <ArrowIcon color={theme.colors.icons} />
       </IconWrapper>
 
       {/* Аватар */}
       <div style={{ marginTop: "72px" }}>
-        {!isLoaded && <Skeleton circle width={104} height={104} />}
+        {!isLoaded && (
+          <Skeleton
+            circle
+            width={104}
+            height={104}
+            baseColor={theme.colors.skeletonBaseColor}
+            highlightColor={theme.colors.skeletonHighlightColor}
+          />
+        )}
         <AvatarImage
           src={hasError ? mockAvatar : user.avatarUrl}
           alt={`${user.firstName} ${user.lastName}`}

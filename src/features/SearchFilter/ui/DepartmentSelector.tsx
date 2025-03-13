@@ -25,7 +25,10 @@ const TabsContainer = styled.div`
 const Tab = styled.div<TabProps>`
   font-size: 15px;
   font-weight: ${(props) => (props.$active ? "600" : "500")};
-  color: ${(props) => (props.$active ? "#050510" : "#97979B")};
+  color: ${(props) =>
+    props.$active
+      ? props.theme.colors.activeTab
+      : props.theme.colors.inactiveTab};
   line-height: 20px;
   cursor: pointer;
   padding: 0 13px 10px 13px;

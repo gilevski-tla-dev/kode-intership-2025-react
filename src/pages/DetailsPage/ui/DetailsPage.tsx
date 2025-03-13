@@ -31,7 +31,7 @@ const BackButton = styled.div`
   cursor: pointer;
 `;
 
-export const ProfilePage = () => {
+export const DetailsPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { users, isLoading, error, refetch } = useUsers("all");
@@ -73,4 +73,4 @@ export const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default DetailsPage;

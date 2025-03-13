@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import mockAvatar from "@/shared/assets/mockAvatar.png";
@@ -11,7 +11,6 @@ const Card = styled.div`
   height: 80px;
   cursor: pointer;
   transition: background-color 0.2s;
-
 `;
 
 const ImageContainer = styled.div`
@@ -45,7 +44,7 @@ const TopRow = styled.div`
 `;
 
 const Name = styled.p`
-  color: #050510;
+  color: ${(props) => props.theme.colors.primaryText};
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
@@ -96,6 +95,7 @@ export const ProfileCard = ({
 }: ProfileCardProps) => {
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
+  const theme = useTheme();
 
   // Сбрасываем loaded при изменении avatarUrl или loading
   useEffect(() => {
@@ -117,8 +117,8 @@ export const ProfileCard = ({
             circle
             width={72}
             height={72}
-            baseColor="#FAFAFA"
-            highlightColor="#F3F3F6"
+            baseColor={theme.colors.skeletonBaseColor}
+            highlightColor={theme.colors.skeletonHighlightColor}
           />
         )}
 
@@ -144,15 +144,15 @@ export const ProfileCard = ({
               borderRadius={50}
               width={144}
               height={16}
-              baseColor="#FAFAFA"
-              highlightColor="#F3F3F6"
+              baseColor={theme.colors.skeletonBaseColor}
+              highlightColor={theme.colors.skeletonHighlightColor}
             />
             <Skeleton
               borderRadius={50}
               width={80}
               height={12}
-              baseColor="#FAFAFA"
-              highlightColor="#F3F3F6"
+              baseColor={theme.colors.skeletonBaseColor}
+              highlightColor={theme.colors.skeletonHighlightColor}
             />
           </>
         ) : (

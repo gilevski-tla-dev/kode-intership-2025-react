@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import PhoneIcon from "@/shared/assets/PhoneIcon";
 import StarIcon from "@/shared/assets/StarIcon";
 import { format, parseISO } from "date-fns";
@@ -33,7 +33,7 @@ const Text = styled.p`
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  color: #050510;
+  color: ${(props) => props.theme.colors.primaryText};
 `;
 
 const Age = styled.p`
@@ -60,15 +60,16 @@ export const ProfileInfo: FC<ProfileInfoProps> = ({ user }) => {
   // Создаем ссылку для звонка
   const phoneLink = `tel:${user.phone}`; // Удаляем все нецифровые символы
 
+  const theme = useTheme();
   return (
     <Container>
       <Block>
-        <StarIcon />
+        <StarIcon color={theme.colors.icons} />
         <Text>{formattedBirthday}</Text>
         <Age>{`${age} ${getAgeSuffix(age)}`}</Age>
       </Block>
       <Block as="a" href={phoneLink}>
-        <PhoneIcon />
+        <PhoneIcon color={theme.colors.icons} />
         <Text>{formattedPhone}</Text>
       </Block>
     </Container>
