@@ -26,7 +26,7 @@ const Title = styled.p`
   font-size: 17px;
   font-weight: 600;
   line-height: 22px;
-  color: #050510;
+  color: ${(props) => props.theme.colors.primaryText};
 `;
 
 const Text = styled.p`
