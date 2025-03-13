@@ -297,7 +297,7 @@ Please change the parent <Route path="${D}"> to <Route path="${D==="/"?"*":`${D}
   height: 108px;
   width: 100%;
   background-color: ${n=>n.$isOffline?"#F44336":n.$isReconnecting?"#6534FF":"transparent"};
-  transition: background-color 0.5s ease;
+  transition: background-color 1s ease;
 `,H6=ee.div`
   margin: 16px 16px 0px 16px;
 `,L6=ee.h1`
