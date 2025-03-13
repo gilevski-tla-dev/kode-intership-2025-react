@@ -94,19 +94,22 @@ export const DepartmentSelector = () => {
     updateIndicatorPosition();
   }, [activeTab]);
 
-  // скролл колесиком мыши
-  const handleWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
-    const container = containerRef.current;
-    if (!container) return;
+  // // скролл колесиком мыши
+  // const handleWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
+  //   const container = containerRef.current;
+  //   if (!container) return;
 
-    container.scrollBy({
-      left: event.deltaY < 0 ? -200 : 200,
-      behavior: "smooth",
-    });
-  };
+  //   container.scrollBy({
+  //     left: event.deltaY < 0 ? -200 : 200,
+  //     behavior: "smooth",
+  //   });
+  // };
 
   return (
-    <TabsContainer ref={containerRef} onWheel={handleWheelScroll}>
+    <TabsContainer
+      ref={containerRef}
+      // onWheel={handleWheelScroll}
+    >
       {tabs.map((tab) => (
         <Tab
           key={tab}
