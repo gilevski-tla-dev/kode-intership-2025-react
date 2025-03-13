@@ -127,7 +127,7 @@ Please change the parent <Route path="${D}"> to <Route path="${D==="/"?"*":`${D}
   height: 2px;
   background-color: #6534ff;
   transition: all 0.3s ease;
-`,j3=["Все","Android","iOS","Дизайн","Менеджмент","QA","Бэк-офис","Frontend","HR","PR","Backend","Техподдержка","Аналитика"],H3=()=>{const n=_3(),a=iv(f=>f.searchFilter.activeTab),i=z.useRef(null),u=z.useRef(null);z.useEffect(()=>{(()=>{const d=i.current,m=u.current;if(!d||!m)return;const y=d.querySelector('[data-active="true"]');if(y){const{offsetLeft:h,offsetWidth:g}=y;m.style.left=`${h}px`,m.style.width=`${g}px`}})()},[a]);const c=f=>{const d=i.current;d&&d.scrollBy({left:f.deltaY<0?-200:200,behavior:"smooth"})};return L.jsxs(N3,{ref:i,onWheel:c,children:[j3.map(f=>L.jsx(z3,{$active:a===f,onClick:()=>n(A3(f)),"data-active":a===f,children:f},f)),L.jsx(U3,{ref:u})]})},L3=ee.svg`
+`,j3=["Все","Android","iOS","Дизайн","Менеджмент","QA","Бэк-офис","Frontend","HR","PR","Backend","Техподдержка","Аналитика"],H3=()=>{const n=_3(),a=iv(c=>c.searchFilter.activeTab),i=z.useRef(null),u=z.useRef(null);return z.useEffect(()=>{(()=>{const f=i.current,d=u.current;if(!f||!d)return;const m=f.querySelector('[data-active="true"]');if(m){const{offsetLeft:y,offsetWidth:h}=m;d.style.left=`${y}px`,d.style.width=`${h}px`}})()},[a]),L.jsxs(N3,{ref:i,children:[j3.map(c=>L.jsx(z3,{$active:a===c,onClick:()=>n(A3(c)),"data-active":a===c,children:c},c)),L.jsx(U3,{ref:u})]})},L3=ee.svg`
   display: block;
   width: 20px;
   height: 20px;
