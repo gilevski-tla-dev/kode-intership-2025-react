@@ -8,6 +8,7 @@ interface TabProps {
 }
 
 const TabsContainer = styled.div`
+  height: 44px;
   position: relative;
   display: flex;
   overflow-x: auto;
@@ -16,6 +17,8 @@ const TabsContainer = styled.div`
   margin-top: auto;
   scrollbar-width: none;
   user-select: none;
+  padding: 16px 16px 0px 16px;
+  border-bottom: 0.5px solid #97979b;
 
   &::-webkit-scrollbar {
     display: none;
@@ -23,6 +26,9 @@ const TabsContainer = styled.div`
 `;
 
 const Tab = styled.div<TabProps>`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   font-size: 15px;
   font-weight: ${(props) => (props.$active ? "600" : "500")};
   color: ${(props) =>

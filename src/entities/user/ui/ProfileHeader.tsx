@@ -1,6 +1,6 @@
 import styled, { useTheme } from "styled-components";
 import ArrowIcon from "@/shared/assets/ArrowIcon";
-import mockAvatar from "@/shared/assets/mockAvatar.png";
+import mockAvatar from "/mockAvatar.png";
 import { FC, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";

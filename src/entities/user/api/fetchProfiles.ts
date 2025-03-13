@@ -43,6 +43,7 @@ export const useUsers = (activeTab: string) => {
     queryFn: () => fetchUsers(exampleKey),
     staleTime: 5 * 60 * 1000, // кэш на 5 минут.
     retry: 1,
+    refetchOnReconnect: true,
   });
 
   return { users, isLoading, error, refetch };

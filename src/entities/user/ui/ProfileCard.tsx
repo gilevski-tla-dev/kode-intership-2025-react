@@ -1,7 +1,7 @@
 import styled, { useTheme } from "styled-components";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import mockAvatar from "@/shared/assets/mockAvatar.png";
+import mockAvatar from "/mockAvatar.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -130,7 +130,6 @@ export const ProfileCard = ({
             onLoad={() => setLoaded(true)}
             onError={(e) => {
               console.error("Image load error:", e);
-              setLoaded(true);
               e.currentTarget.src = mockAvatar;
             }}
           />
