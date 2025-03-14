@@ -23,11 +23,12 @@ const ImageContainer = styled.div`
   overflow: hidden;
 `;
 
-const StyledImage = styled.img`
+const StyledImage = styled.img<{ $isLoading?: boolean }>`
   width: 100%;
   height: 100%;
   object-fit: cover;
   background-color: #f0f0f0;
+  display: ${(props) => (props.$isLoading ? "none" : "block")};
 `;
 
 const InfoContainer = styled.div`
@@ -111,8 +112,8 @@ export const ProfileCard = ({
   return (
     <Card onClick={handleClick}>
       <ImageContainer>
-        {/* Показываем скелетон если loading ИЛИ (!loaded и данные загружены) */}
-        {(loading || (!loaded && !loading)) && (
+        {/* Скелетон отображается, если loading или (!loaded && !avatarUrl) */}
+        {(loading || (!loaded && !avatarUrl)) && (
           <Skeleton
             circle
             width={72}
@@ -122,11 +123,12 @@ export const ProfileCard = ({
           />
         )}
 
-        {/* Рендерим изображение только когда данные загружены */}
+        {/* Изображение рендерится только если !loading */}
         {!loading && (
           <StyledImage
             src={avatarUrl || mockAvatar}
             alt={`${firstName} ${lastName}`}
+            $isLoading={!loaded}
             onLoad={() => setLoaded(true)}
             onError={(e) => {
               console.error("Image load error:", e);
