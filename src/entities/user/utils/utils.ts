@@ -1,23 +1,27 @@
-import { parseISO, differenceInYears } from "date-fns";
+import { parseISO, differenceInYears, format } from "date-fns";
 
 // Функция для правильного склонения слова "год"
-export const getAgeSuffix = (age: number): string => {
+
+export const getAgeSuffix = (
+  age: number,
+  t: (key: string) => string
+): string => {
   const lastDigit = age % 10;
   const lastTwoDigits = age % 100;
 
   if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
-    return "лет";
+    return t("ageSuffixes.years_plural");
   }
 
   if (lastDigit === 1) {
-    return "год";
+    return t("ageSuffixes.year");
   }
 
   if (lastDigit >= 2 && lastDigit <= 4) {
-    return "года";
+    return t("ageSuffixes.years");
   }
 
-  return "лет";
+  return t("ageSuffixes.years_plural");
 };
 
 // Функция для расчета возраста
@@ -35,4 +39,19 @@ export const formatPhoneNumber = (phone: string): string => {
     return `+${match[1]} (${match[2]}) ${match[3]} ${match[4]} ${match[5]}`;
   }
   return phone; // исходный номер, если формат неверный
+};
+
+export const formatBirthday = (
+  birthday: string,
+  t: (key: string) => string
+): string => {
+  const date = parseISO(birthday);
+  const day = format(date, "d");
+  const month = format(date, "MMMM"); // Получаем название месяца
+  const year = format(date, "yyyy");
+
+  // Переводим месяц через i18next
+  const translatedMonth = t(`months.${month}`);
+
+  return `${day} ${translatedMonth} ${year}`;
 };

@@ -7,6 +7,7 @@ import { setSearchQuery } from "../model/searchFilterSlice";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 import { selectSearchQuery } from "../model/selectors"; // Импортируем селектор
 import FilterModal from "@/features/FilterModal/ui/FilterModal";
+import { useTranslation } from "react-i18next";
 
 const Wrapper = styled.div`
   position: relative;
@@ -73,6 +74,7 @@ const SearchInput = () => {
   const [inputValue, setInputValue] = useState(SearchQuery); // Инициализируем состояние из Redux
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const debouncedValue = useDebounce<string>(inputValue, 300);
+  const { t } = useTranslation();
 
   // Синхронизация Redux-состояния с локальным состоянием
   useEffect(() => {
@@ -96,7 +98,7 @@ const SearchInput = () => {
       <Input
         value={inputValue}
         onChange={handleChange}
-        placeholder="Введи имя, тег, почту..."
+        placeholder={t("searchinput.placeholder")}
       />
       <FilterIconWrapper onClick={() => setIsFilterOpen(true)}>
         <FilterIcon />

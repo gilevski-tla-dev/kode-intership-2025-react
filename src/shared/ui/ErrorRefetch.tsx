@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import fetchErrorIcon from "@/shared/assets/fetchError.png";
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
   display: flex;
@@ -53,15 +54,17 @@ interface ErrorRefetchProps {
 }
 
 const ErrorRefetch = ({ onRefetch }: ErrorRefetchProps) => {
+  const { t } = useTranslation();
+
   return (
     <Container>
       <StyledImage src={fetchErrorIcon} alt="Ошибка загрузки" />
 
       <InfoContainer>
-        <Title>Какой-то сверхразум все сломал</Title>
-        <Text>Постараемся быстро починить</Text>
+        <Title>{t("errorrefetch.title")}</Title>
+        <Text>{t("errorrefetch.text")}</Text>
         {/* onRefetch при клике */}
-        <Button onClick={onRefetch}>Попробовать снова</Button>
+        <Button onClick={onRefetch}>{t("errorrefetch.button")}</Button>
       </InfoContainer>
     </Container>
   );

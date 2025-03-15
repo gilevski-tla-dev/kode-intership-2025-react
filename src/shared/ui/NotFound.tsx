@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import notFoundIcon from "@/shared/assets/notFound.png";
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
   display: flex;
@@ -37,13 +38,15 @@ const Text = styled.p`
 `;
 
 const NotFound = () => {
+  const { t } = useTranslation();
+
   return (
     <Container>
-      <StyledImage src={notFoundIcon} alt="Мы никого не нашли" />
+      <StyledImage src={notFoundIcon} alt={t("notfound.title")} />
 
       <InfoContainer>
-        <Title>Мы никого не нашли</Title>
-        <Text>Попробуй скорректировать запрос</Text>
+        <Title>{t("notfound.title")}</Title>
+        <Text>{t("notfound.text")}</Text>
       </InfoContainer>
     </Container>
   );

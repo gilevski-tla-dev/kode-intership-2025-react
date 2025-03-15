@@ -2,6 +2,7 @@ import DepartmentSelector from "@/features/SearchFilter/ui/DepartmentSelector";
 import SearchInput from "@/features/SearchFilter/ui/SearchInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Container = styled.div<{ $isOffline: boolean; $isReconnecting: boolean }>`
@@ -45,6 +46,7 @@ export const AppTabBar = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [isReconnecting, setIsReconnecting] = useState(false);
   const queryClient = useQueryClient(); // Получаем экземпляр queryClient
+  const { t } = useTranslation();
 
   // Обработчик изменения состояния сети
   useEffect(() => {
@@ -60,7 +62,7 @@ export const AppTabBar = () => {
     };
 
     const handleOffline = () => {
-      setIsReconnecting(false); // сброс флага восстановления
+      setIsReconnecting(false); // Сброс флага восстановления
       setIsOnline(false);
     };
 
@@ -77,17 +79,18 @@ export const AppTabBar = () => {
     <>
       <Container $isOffline={!isOnline} $isReconnecting={isReconnecting}>
         <TopContainer>
+          {/* Используем точечную нотацию для доступа к вложенному ключу */}
           <Title $isOffline={!isOnline} $isReconnecting={isReconnecting}>
-            Поиск
+            {t("apptabbar.title")}
           </Title>
           {isOnline && !isReconnecting ? (
             <SearchInput />
           ) : isOnline && isReconnecting ? (
-            <OfflineMessage>Секундочку, гружусь...</OfflineMessage>
-          ) : (
             <OfflineMessage>
-              Не могу обновить данные. Проверь соединение с интернетом.
+              {t("apptabbar.reconnectingMessage")}
             </OfflineMessage>
+          ) : (
+            <OfflineMessage>{t("apptabbar.offlineMessage")}</OfflineMessage>
           )}
         </TopContainer>
       </Container>

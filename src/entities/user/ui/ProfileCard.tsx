@@ -97,6 +97,7 @@ export const ProfileCard = ({
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
+  const [isMockAvatarSet, setIsMockAvatarSet] = useState(false);
 
   // Сбрасываем loaded при изменении avatarUrl или loading
   useEffect(() => {
@@ -131,8 +132,11 @@ export const ProfileCard = ({
             $isLoading={!loaded}
             onLoad={() => setLoaded(true)}
             onError={(e) => {
-              console.error("Image load error:", e);
-              e.currentTarget.src = mockAvatar;
+              if (!isMockAvatarSet) {
+                console.error("Image load error:", e);
+                e.currentTarget.src = mockAvatar;
+                setIsMockAvatarSet(true);
+              }
             }}
           />
         )}

@@ -2,6 +2,7 @@ import { setSortType } from "@/features/SearchFilter/model/searchFilterSlice";
 import { selectSortType } from "@/features/SearchFilter/model/selectors";
 import CrossIcon from "@/shared/assets/CrossIcon";
 import { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { keyframes } from "styled-components";
 
@@ -138,6 +139,7 @@ const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const sortType = useSelector(selectSortType);
   const [isClosing, setIsClosing] = useState(false);
+  const { t } = useTranslation();
 
   const handleOptionChange = (value: string) => {
     dispatch(setSortType(value));
@@ -159,7 +161,7 @@ const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
         <CloseButton onClick={handleClose}>
           <CrossIcon />
         </CloseButton>
-        <Title>Сортировка</Title>
+        <Title>{t("filtermodal.title")}</Title>
 
         <RadioButtonWrapper>
           <RadioLabel>
@@ -171,7 +173,7 @@ const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
               onChange={() => handleOptionChange("alphabet")}
             />
             <StyledRadio checked={sortType === "alphabet"} />
-            <RadioText>По алфавиту</RadioText>
+            <RadioText>{t("filtermodal.byAlphabet")}</RadioText>
           </RadioLabel>
 
           <RadioLabel>
@@ -183,7 +185,7 @@ const FilterModal: FC<FilterModalProps> = ({ onClose }) => {
               onChange={() => handleOptionChange("birthDate")}
             />
             <StyledRadio checked={sortType === "birthDate"} />
-            <RadioText>По дню рождения</RadioText>
+            <RadioText>{t("filtermodal.byBirthday")}</RadioText>
           </RadioLabel>
         </RadioButtonWrapper>
       </ModalContent>

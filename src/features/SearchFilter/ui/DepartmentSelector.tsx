@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useEffect, useRef } from "react";
 import { setActiveTab } from "../model/searchFilterSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store/types";
+import { useTranslation } from "react-i18next";
+import { departmentTranslate } from "@/shared/utils/departmentTranslate";
 
 interface TabProps {
   $active: boolean;
@@ -53,10 +55,11 @@ const Indicator = styled.div`
 
 const tabs = [
   "Все",
-  "Android",
-  "iOS",
   "Дизайн",
+  "Аналитика",
   "Менеджмент",
+  "iOS",
+  "Android",
   "QA",
   "Бэк-офис",
   "Frontend",
@@ -64,10 +67,10 @@ const tabs = [
   "PR",
   "Backend",
   "Техподдержка",
-  "Аналитика",
 ];
 
 export const DepartmentSelector = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const activeTab = useAppSelector((state) => state.searchFilter.activeTab);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,35 +97,25 @@ export const DepartmentSelector = () => {
     updateIndicatorPosition();
   }, [activeTab]);
 
-  // // скролл колесиком мыши
-  // const handleWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
-  //   const container = containerRef.current;
-  //   if (!container) return;
-
-  //   container.scrollBy({
-  //     left: event.deltaY < 0 ? -200 : 200,
-  //     behavior: "smooth",
-  //   });
-  // };
+  const translatedTabs = tabs.map((tab) => ({
+    key: tab,
+    label: t(`departments.${departmentTranslate[tab]}`),
+  }));
 
   return (
-    <TabsContainer
-      ref={containerRef}
-      // onWheel={handleWheelScroll}
-    >
-      {tabs.map((tab) => (
+    <TabsContainer ref={containerRef}>
+      {translatedTabs.map(({ key, label }) => (
         <Tab
-          key={tab}
-          $active={activeTab === tab}
-          onClick={() => dispatch(setActiveTab(tab))}
-          data-active={activeTab === tab}
+          key={key}
+          $active={activeTab === key}
+          onClick={() => dispatch(setActiveTab(key))}
+          data-active={activeTab === key}
         >
-          {tab}
+          {label}
         </Tab>
       ))}
       <Indicator ref={indicatorRef} />
     </TabsContainer>
   );
 };
-
 export default DepartmentSelector;

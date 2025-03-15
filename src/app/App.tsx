@@ -1,11 +1,9 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
-import { HomePage } from "../pages/HomePage";
-import { DetailsPage } from "../pages/DetailsPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import GlobalStyle from "@/shared/config/GlobalStyle";
 import ThemeProvider from "./providers/ThemeProvider";
+import { Router } from "./routers/router";
 
 const queryClient = new QueryClient();
 
@@ -15,12 +13,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <GlobalStyle />
-          <HashRouter>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/profile/:id" element={<DetailsPage />} />
-            </Routes>
-          </HashRouter>
+          <Router />
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Spinner = styled.div`
@@ -27,11 +28,15 @@ const LoadingContainer = styled.div`
   height: 100vh;
 `;
 
-export const LoadingIndicator = () => (
-  <LoadingContainer>
-    <Spinner />
-    <p style={{ marginTop: "16px", fontSize: "16px", color: "#666" }}>
-      Загрузка...
-    </p>
-  </LoadingContainer>
-);
+export const LoadingIndicator = () => {
+  const { t } = useTranslation();
+
+  return (
+    <LoadingContainer>
+      <Spinner />
+      <p style={{ marginTop: "16px", fontSize: "16px", color: "#666" }}>
+        {t("loadingindicator.message")}
+      </p>
+    </LoadingContainer>
+  );
+};

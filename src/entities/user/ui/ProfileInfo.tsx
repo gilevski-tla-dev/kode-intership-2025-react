@@ -1,10 +1,14 @@
-import { FC } from "react";
+import React from "react";
 import styled, { useTheme } from "styled-components";
 import PhoneIcon from "@/shared/assets/PhoneIcon";
 import StarIcon from "@/shared/assets/StarIcon";
-import { format, parseISO } from "date-fns";
-import { ru } from "date-fns/locale";
-import { calculateAge, formatPhoneNumber, getAgeSuffix } from "../utils/utils";
+import { useTranslation } from "react-i18next";
+import {
+  calculateAge,
+  formatPhoneNumber,
+  getAgeSuffix,
+  formatBirthday,
+} from "../utils/utils";
 
 interface ProfileInfoProps {
   user: {
@@ -45,28 +49,29 @@ const Age = styled.p`
   margin-right: 4px;
 `;
 
-export const ProfileInfo: FC<ProfileInfoProps> = ({ user }) => {
+export const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
+  const { t } = useTranslation();
+  const theme = useTheme();
+
   // Форматирование даты рождения
-  const formattedBirthday = format(parseISO(user.birthday), "d MMMM yyyy", {
-    locale: ru,
-  });
+  const formattedBirthday = formatBirthday(user.birthday, t);
 
   // Вычисляем возраст
   const age = calculateAge(user.birthday);
+  const ageSuffix = getAgeSuffix(age, t);
 
   // Форматируем телефон
   const formattedPhone = formatPhoneNumber(user.phone);
 
   // Создаем ссылку для звонка
-  const phoneLink = `tel:${user.phone}`; // Удаляем все нецифровые символы
+  const phoneLink = `tel:${user.phone.replace(/\D/g, "")}`; // Удаляем все нецифровые символы
 
-  const theme = useTheme();
   return (
     <Container>
       <Block>
         <StarIcon color={theme.colors.icons} />
         <Text>{formattedBirthday}</Text>
-        <Age>{`${age} ${getAgeSuffix(age)}`}</Age>
+        <Age>{`${age} ${ageSuffix}`}</Age>
       </Block>
       <Block as="a" href={phoneLink}>
         <PhoneIcon color={theme.colors.icons} />
