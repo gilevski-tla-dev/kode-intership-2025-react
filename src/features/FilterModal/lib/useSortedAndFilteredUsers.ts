@@ -1,37 +1,17 @@
 import { User } from "@/entities/user/api/fetchProfiles";
 import { useMemo } from "react";
 import { isBefore, addYears, setYear } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 // Тип для элементов массива sortedUsersWithSeparators
 type ListItem = { type: "separator" } | { type: "user"; user: User };
-
-// Функция форматирования даты
-const formatDateForDisplay = (birthday: string): string => {
-  const date = new Date(birthday);
-  const day = date.getDate();
-  const monthNames = [
-    "янв",
-    "фев",
-    "мар",
-    "апр",
-    "май",
-    "июн",
-    "июл",
-    "авг",
-    "сен",
-    "окт",
-    "ноя",
-    "дек",
-  ];
-  const month = monthNames[date.getMonth()];
-  return `${day} ${month}`;
-};
 
 export const useSortedAndFilteredUsers = (
   users: User[] | undefined,
   filters: { searchQuery: string; sortType: string }
 ) => {
-  // Фильтрация пользователей
+  const { t } = useTranslation(); // Используем i18n для переводов
+
   const filteredUsers = useMemo(() => {
     return users
       ? users.filter((user) => {
@@ -45,6 +25,17 @@ export const useSortedAndFilteredUsers = (
         })
       : [];
   }, [users, filters.searchQuery]);
+
+  // Функция форматирования даты
+  const formatDateForDisplay = (birthday: string): string => {
+    const date = new Date(birthday);
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+
+    // Получаем перевод месяца через i18n
+    const month = t(`month.${monthIndex}`);
+    return `${day} ${month}`;
+  };
 
   // Сортировка пользователей
   const sortedUsers = useMemo(() => {
